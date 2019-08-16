@@ -1,6 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import './index.less'
@@ -54,9 +55,9 @@ class Index extends Component {
   render() {
     return (
       <View className='index'>
-        <Button className='add_btn' onClick={() => { this.props.dispatch(actions.add(1)) }}>+</Button>
-        <Button className='dec_btn' onClick={() => { this.props.dispatch(actions.minus(1)) }}>-</Button>
-        <Button className='dec_btn' onClick={() => { this.props.dispatch(actions.asyncAdd(1)) }}>async</Button>
+        <AtButton className='add_btn' type={"primary"} onClick={() => { this.props.dispatch(actions.add(1)) }}>+</AtButton>
+        <AtButton className='dec_btn' onClick={() => { this.props.dispatch(actions.minus(1)) }}>-</AtButton>
+        <AtButton className='dec_btn' onClick={() => { this.props.dispatch(actions.asyncAdd(1)) }}>async</AtButton>
         <View><Text>{this.props.number}</Text></View>
         <View><Text>Hello, World</Text></View>
       </View>
