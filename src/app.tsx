@@ -2,12 +2,12 @@ import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 import "./config/taroConfig"
-import Index from './pages/index'
 
 import dva from './utils/dva'
 import models from './models'
 import 'taro-ui/dist/style/index.scss'
 
+import './assets/font/iconfont.css'
 import './app.less'
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -34,8 +34,37 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/index/index'
+      'pages/loading/index',//加载页
+      'pages/login/index',//登录页
+      'pages/home/index',//首页
+      'pages/report/index',//报表页
+      'pages/profile/index',//用户页
     ],
+    tabBar: {
+      color: '#666',
+      selectedColor: '#000',
+      backgroundColor: '#fff',
+      list: [
+        {
+          pagePath: 'pages/home/index',
+          iconPath: 'assets/icons/home.png',
+          selectedIconPath: 'assets/icons/home-active.png',
+          text: '首页'
+        },
+        {
+          pagePath: 'pages/report/index',
+          iconPath: 'assets/icons/report.png',
+          selectedIconPath: 'assets/icons/report-active.png',
+          text: '报表'
+        },
+        {
+          pagePath: 'pages/profile/index',
+          iconPath: 'assets/icons/profile.png',
+          selectedIconPath: 'assets/icons/profile-active.png',
+          text: '我的'
+        },
+      ]
+    },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -44,7 +73,17 @@ class App extends Component {
     }
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+    if (Taro.getStorageSync('token')) {
+      Taro.switchTab({
+        url: 'pages/home/index'
+      })
+    } else {
+      Taro.reLaunch({
+        url: 'pages/login/index'
+      })
+    }
+  }
 
   componentDidShow() { }
 
@@ -57,7 +96,6 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Index />
       </Provider>
     )
   }

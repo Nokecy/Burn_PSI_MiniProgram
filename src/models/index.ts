@@ -1,2 +1,3 @@
 import counter from "./counter";
-export default [counter]
+import login from "../pages/login/login.model"
+export default [counter, login]
