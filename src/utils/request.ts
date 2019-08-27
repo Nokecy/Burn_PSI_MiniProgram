@@ -16,3 +16,14 @@ export default <T = any, U = any>(OBJECT: request.Param<U>): Promise<request.Pro
         throw error;
     });
 }
+
+export const Fetch = (url: string, options_: RequestInit) => {
+    return Taro.request({
+        url: url,
+        header: options_.headers,
+        method: options_.method,
+        data: options_.body
+    }).then(_res => {
+        return _res.
+    });
+}

@@ -71,6 +71,7 @@
     "stylelint-taro-rn": "1.3.13",
     "eslint-plugin-taro": "1.3.13",
     "@typescript-eslint/parser": "^1.6.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "nswag": "^13.0.6"
   }
 }

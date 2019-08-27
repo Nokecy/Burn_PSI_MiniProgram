@@ -39,6 +39,8 @@ class App extends Component {
       'pages/home/index',//首页
       'pages/report/index',//报表页
       'pages/profile/index',//用户页
+
+      'pages/app/base/category/index',//存货分类
     ],
     tabBar: {
       color: '#666',
