@@ -1,34 +1,34 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
-import { ProductCategoryServiceProxy as ServiceProxy, PagedResultDtoOfProductCategoryDto, ProductCategoryDto } from "ApiService";
-const namespace = "category";
+import { WarehouseServiceProxy as ServiceProxy, PagedResultDtoOfWarehouseDto, WarehouseDto } from "ApiService";
+const namespace = "warehouse";
 
-export interface CategoryProps {
-    list?: ProductCategoryDto[],
-    entity?: ProductCategoryDto
+export interface WarehouseProps {
+    list?: WarehouseDto[],
+    entity?: WarehouseDto
 }
 
 const actionCreator = actionCreatorFactory(namespace);
-const updateState = actionCreator<CategoryProps>('updateState');
+const updateState = actionCreator<WarehouseProps>('updateState');
 const query = actionCreator('query');
 const get = actionCreator<{ id: string }>('get');
-const create = actionCreator<ProductCategoryDto>('create');
-const update = actionCreator<ProductCategoryDto>('update');
+const create = actionCreator<WarehouseDto>('create');
+const update = actionCreator<WarehouseDto>('update');
 const deleteAction = actionCreator<{ id: string }>('delete');
 
-const model = new DvaModelBuilder<CategoryProps>({ list: [] }, namespace)
+const model = new DvaModelBuilder<WarehouseProps>({ list: [] }, namespace)
     .case(updateState, (state, payload) => {
         return { ...state, ...payload };
     })
 
     .takeEvery(query, function* (payload, { put }) {
         let service = new ServiceProxy();
-        const categorys: PagedResultDtoOfProductCategoryDto = yield service.getList(undefined, 30, 0, undefined);
+        const categorys: PagedResultDtoOfWarehouseDto = yield service.getList(undefined, 30, 0, undefined);
         yield put(updateState({ list: categorys.items }));
     })
 
     .takeEvery(get, function* (payload, { put }) {
         let service = new ServiceProxy();
-        const category: ProductCategoryDto = yield service.get(payload.id);
+        const category: WarehouseDto = yield service.get(payload.id);
         yield put(updateState({ entity: category }));
     })
 
