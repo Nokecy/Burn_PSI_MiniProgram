@@ -4,7 +4,7 @@ import { View, } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import './index.less'
-import { Counter } from "../../models/counter";
+import { Counter } from "../../models/global";
 import { AtGrid } from 'taro-ui';
 
 type PageOwnProps = {

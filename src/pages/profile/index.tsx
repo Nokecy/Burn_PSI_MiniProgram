@@ -5,7 +5,7 @@ import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import './index.less'
-import { Counter, actions } from "../../models/counter";
+import { Counter, actions } from "../../models/global";
 
 type PageOwnProps = {
   dispatch?: Function

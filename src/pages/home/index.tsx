@@ -4,11 +4,9 @@ import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import './index.less'
-import { Counter } from "../../models/counter";
+import { Counter } from "../../models/global";
 import { AtGrid } from 'taro-ui';
 import MainMenus from "../../config/mainMenu";
-import MainMenu from 'src/types/mainMenu';
-import { Item } from 'taro-ui/@types/grid';
 
 type PageOwnProps = {
   dispatch?: Function
