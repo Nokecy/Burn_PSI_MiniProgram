@@ -1,4 +1,2 @@
 ﻿import moment from 'moment';
-class ClientBase {
-
-}
+import Taro, { request } from '@tarojs/taro';

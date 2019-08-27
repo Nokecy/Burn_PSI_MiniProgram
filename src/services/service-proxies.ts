@@ -8,14 +8,13 @@
 // ReSharper disable InconsistentNaming
 
 import moment from 'moment';
+import Taro, { request } from '@tarojs/taro';
 
 export class AttachmentServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -37,32 +36,17 @@ export class AttachmentServiceProxy {
             url_ += "FileName=" + encodeURIComponent("" + fileName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
                 "Accept": "application/octet-stream"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpload(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpload(response: Response): Promise<FileResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileResponse>(<any>null);
     }
 
     download(id: string): Promise<FileResponse> {
@@ -72,42 +56,25 @@ export class AttachmentServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
                 "Accept": "application/octet-stream"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDownload(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDownload(response: Response): Promise<FileResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
 export class ProfilePictureServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -117,42 +84,25 @@ export class ProfilePictureServiceProxy {
             url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/octet-stream"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<FileResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
 export class TokenAuthServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -162,46 +112,27 @@ export class TokenAuthServiceProxy {
 
         const content_ = JSON.stringify(model);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAuthenticate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAuthenticate(response: Response): Promise<AuthenticateResultModel> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AuthenticateResultModel.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AuthenticateResultModel>(<any>null);
     }
 }
 
 export class SettingPageServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -209,48 +140,25 @@ export class SettingPageServiceProxy {
         let url_ = this.baseUrl + "/api/SettingPage";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetGroups(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetGroups(response: Response): Promise<SettingPageGroupDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(SettingPageGroupDto.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SettingPageGroupDto[]>(<any>null);
     }
 }
 
 export class AbpServiceProxyScriptServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -270,44 +178,25 @@ export class AbpServiceProxyScriptServiceProxy {
             url_ += "Actions=" + encodeURIComponent("" + actions) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<string> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<string>(<any>null);
     }
 }
 
 export class AbpLanguagesServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -321,42 +210,25 @@ export class AbpLanguagesServiceProxy {
             url_ += "returnUrl=" + encodeURIComponent("" + returnUrl) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/octet-stream"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processSwitch(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processSwitch(response: Response): Promise<FileResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
 export class AbpApplicationConfigurationScriptServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -364,44 +236,25 @@ export class AbpApplicationConfigurationScriptServiceProxy {
         let url_ = this.baseUrl + "/Abp/ApplicationConfigurationScript";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<string> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<string>(<any>null);
     }
 }
 
 export class AbpLocalizationDefinitionServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -409,44 +262,25 @@ export class AbpLocalizationDefinitionServiceProxy {
         let url_ = this.baseUrl + "/api/abp/localization-definition";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<LanguageSwitchViewComponentModel> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = LanguageSwitchViewComponentModel.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<LanguageSwitchViewComponentModel>(<any>null);
     }
 }
 
 export class AbpMenuDefinitionServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -454,44 +288,25 @@ export class AbpMenuDefinitionServiceProxy {
         let url_ = this.baseUrl + "/api/abp/menu-definition";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<ApplicationMenuModel> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationMenuModel.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ApplicationMenuModel>(<any>null);
     }
 }
 
 export class AbpTenantServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -502,44 +317,25 @@ export class AbpTenantServiceProxy {
         url_ = url_.replace("{name}", encodeURIComponent("" + name)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindTenant(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindTenant(response: Response): Promise<FindTenantResult> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FindTenantResult.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FindTenantResult>(<any>null);
     }
 }
 
 export class DataPermissionServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -549,32 +345,18 @@ export class DataPermissionServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     delete(name: string | null | undefined): Promise<void> {
@@ -583,30 +365,16 @@ export class DataPermissionServiceProxy {
             url_ += "name=" + encodeURIComponent("" + name) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     update(input: NameValue): Promise<void> {
@@ -615,32 +383,18 @@ export class DataPermissionServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(name: string | null | undefined): Promise<DataPermissionDto> {
@@ -649,34 +403,17 @@ export class DataPermissionServiceProxy {
             url_ += "name=" + encodeURIComponent("" + name) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<DataPermissionDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = DataPermissionDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DataPermissionDto>(<any>null);
     }
 
     getDataPermissionItems(name: string | null | undefined): Promise<DataPermissionItemDto[]> {
@@ -685,124 +422,59 @@ export class DataPermissionServiceProxy {
             url_ += "name=" + encodeURIComponent("" + name) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetDataPermissionItems(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetDataPermissionItems(response: Response): Promise<DataPermissionItemDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DataPermissionItemDto.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DataPermissionItemDto[]>(<any>null);
     }
 
     getAllList(): Promise<DataPermissionDto[]> {
         let url_ = this.baseUrl + "/api/app/dataPermission/list";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAllList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAllList(response: Response): Promise<DataPermissionDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DataPermissionDto.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DataPermissionDto[]>(<any>null);
     }
 
     getNames(): Promise<NameValue[]> {
         let url_ = this.baseUrl + "/api/app/dataPermission/names";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetNames(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetNames(response: Response): Promise<NameValue[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(NameValue.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<NameValue[]>(<any>null);
     }
 }
 
 export class AccountServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -812,36 +484,19 @@ export class AccountServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processRegister(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processRegister(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(<any>null);
     }
 
     login(login: UserLoginInfo): Promise<AbpLoginResult> {
@@ -850,36 +505,19 @@ export class AccountServiceProxy {
 
         const content_ = JSON.stringify(login);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processLogin(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processLogin(response: Response): Promise<AbpLoginResult> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AbpLoginResult.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AbpLoginResult>(<any>null);
     }
 
     checkPassword(login: UserLoginInfo): Promise<AbpLoginResult> {
@@ -888,46 +526,27 @@ export class AccountServiceProxy {
 
         const content_ = JSON.stringify(login);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCheckPassword(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCheckPassword(response: Response): Promise<AbpLoginResult> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AbpLoginResult.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AbpLoginResult>(<any>null);
     }
 }
 
 export class AbpApplicationConfigurationServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -935,44 +554,25 @@ export class AbpApplicationConfigurationServiceProxy {
         let url_ = this.baseUrl + "/api/abp/application-configuration";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<ApplicationConfigurationDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationConfigurationDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ApplicationConfigurationDto>(<any>null);
     }
 }
 
 export class AbpApiDefinitionServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -980,44 +580,25 @@ export class AbpApiDefinitionServiceProxy {
         let url_ = this.baseUrl + "/api/abp/api-definition";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<ApplicationApiDescriptionModel> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ApplicationApiDescriptionModel.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ApplicationApiDescriptionModel>(<any>null);
     }
 }
 
 export class IdentityRoleServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -1025,34 +606,17 @@ export class IdentityRoleServiceProxy {
         let url_ = this.baseUrl + "/api/identity/roles";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<ListResultDtoOfIdentityRoleDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfIdentityRoleDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfIdentityRoleDto>(<any>null);
     }
 
     create(input: IdentityRoleCreateDto): Promise<IdentityRoleDto> {
@@ -1061,36 +625,19 @@ export class IdentityRoleServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<IdentityRoleDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityRoleDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityRoleDto>(<any>null);
     }
 
     get(id: string): Promise<IdentityRoleDto> {
@@ -1100,34 +647,17 @@ export class IdentityRoleServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<IdentityRoleDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityRoleDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityRoleDto>(<any>null);
     }
 
     update(id: string, input: IdentityRoleUpdateDto): Promise<IdentityRoleDto> {
@@ -1139,36 +669,19 @@ export class IdentityRoleServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<IdentityRoleDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityRoleDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityRoleDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -1178,40 +691,24 @@ export class IdentityRoleServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class IdentityUserServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -1222,34 +719,17 @@ export class IdentityUserServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(<any>null);
     }
 
     update(id: string, input: IdentityUserUpdateDto): Promise<IdentityUserDto> {
@@ -1261,36 +741,19 @@ export class IdentityUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -1300,30 +763,16 @@ export class IdentityUserServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     getList(filter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Promise<PagedResultDtoOfIdentityUserDto> {
@@ -1342,34 +791,17 @@ export class IdentityUserServiceProxy {
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfIdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfIdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfIdentityUserDto>(<any>null);
     }
 
     create(input: IdentityUserCreateDto): Promise<IdentityUserDto> {
@@ -1378,36 +810,19 @@ export class IdentityUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(<any>null);
     }
 
     getRoles(id: string): Promise<ListResultDtoOfIdentityRoleDto> {
@@ -1417,34 +832,17 @@ export class IdentityUserServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetRoles(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetRoles(response: Response): Promise<ListResultDtoOfIdentityRoleDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfIdentityRoleDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfIdentityRoleDto>(<any>null);
     }
 
     updateRoles(id: string, input: IdentityUserUpdateRolesDto): Promise<void> {
@@ -1456,32 +854,18 @@ export class IdentityUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdateRoles(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdateRoles(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     findByUsername(username: string | null): Promise<IdentityUserDto> {
@@ -1491,34 +875,17 @@ export class IdentityUserServiceProxy {
         url_ = url_.replace("{username}", encodeURIComponent("" + username)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindByUsername(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindByUsername(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(<any>null);
     }
 
     findByEmail(email: string | null): Promise<IdentityUserDto> {
@@ -1528,44 +895,25 @@ export class IdentityUserServiceProxy {
         url_ = url_.replace("{email}", encodeURIComponent("" + email)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindByEmail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindByEmail(response: Response): Promise<IdentityUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = IdentityUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<IdentityUserDto>(<any>null);
     }
 }
 
 export class IdentityUserLookupServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -1576,34 +924,17 @@ export class IdentityUserLookupServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindById(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindById(response: Response): Promise<UserData> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserData.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UserData>(<any>null);
     }
 
     findByUserName(userName: string | null): Promise<UserData> {
@@ -1613,44 +944,25 @@ export class IdentityUserLookupServiceProxy {
         url_ = url_.replace("{userName}", encodeURIComponent("" + userName)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindByUserName(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindByUserName(response: Response): Promise<UserData> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserData.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UserData>(<any>null);
     }
 }
 
 export class ProfileServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -1658,34 +970,17 @@ export class ProfileServiceProxy {
         let url_ = this.baseUrl + "/api/identity/my-profile";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<ProfileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProfileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProfileDto>(<any>null);
     }
 
     update(input: UpdateProfileDto): Promise<ProfileDto> {
@@ -1694,36 +989,19 @@ export class ProfileServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<ProfileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProfileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProfileDto>(<any>null);
     }
 
     changePassword(input: ChangePasswordInput): Promise<void> {
@@ -1732,42 +1010,26 @@ export class ProfileServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processChangePassword(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processChangePassword(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class PermissionsServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -1779,34 +1041,17 @@ export class PermissionsServiceProxy {
             url_ += "providerKey=" + encodeURIComponent("" + providerKey) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<GetPermissionListResultDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetPermissionListResultDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<GetPermissionListResultDto>(<any>null);
     }
 
     update(providerName: string | null | undefined, providerKey: string | null | undefined, input: UpdatePermissionsDto): Promise<void> {
@@ -1819,42 +1064,26 @@ export class PermissionsServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class ReportServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -1872,34 +1101,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetPurchaseExecution(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetPurchaseExecution(response: Response): Promise<ListResultDtoOfPurchaseOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfPurchaseOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfPurchaseOrderItemDto>(<any>null);
     }
 
     exportPurchaseExecution(input: GetPurchaseReportInput): Promise<FileDto> {
@@ -1908,36 +1120,19 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportPurchaseExecution(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportPurchaseExecution(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     getPurchaseInStoreDetail(supplierName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfPurchaseInOrderItemDto> {
@@ -1954,34 +1149,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetPurchaseInStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetPurchaseInStoreDetail(response: Response): Promise<ListResultDtoOfPurchaseInOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfPurchaseInOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfPurchaseInOrderItemDto>(<any>null);
     }
 
     exportPurchaseInStoreDetail(input: GetPurchaseReportInput): Promise<FileDto> {
@@ -1990,36 +1168,19 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportPurchaseInStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportPurchaseInStoreDetail(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     getPurchaseOutStoreDetail(supplierName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfPurchaseOutOrderItemDto> {
@@ -2036,34 +1197,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetPurchaseOutStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetPurchaseOutStoreDetail(response: Response): Promise<ListResultDtoOfPurchaseOutOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfPurchaseOutOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfPurchaseOutOrderItemDto>(<any>null);
     }
 
     exportPurchaseOutStoreDetail(input: GetPurchaseReportInput): Promise<FileDto> {
@@ -2072,36 +1216,19 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportPurchaseOutStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportPurchaseOutStoreDetail(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     getSalesExecution(customerName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfSaleOrderItemDto> {
@@ -2118,34 +1245,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetSalesExecution(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetSalesExecution(response: Response): Promise<ListResultDtoOfSaleOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfSaleOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfSaleOrderItemDto>(<any>null);
     }
 
     exportSalesExecution(input: GetSalesReportInput): Promise<FileDto> {
@@ -2154,36 +1264,19 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportSalesExecution(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportSalesExecution(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     getSalesInStoreDetail(customerName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfSaleInOrderItemDto> {
@@ -2200,34 +1293,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetSalesInStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetSalesInStoreDetail(response: Response): Promise<ListResultDtoOfSaleInOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfSaleInOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfSaleInOrderItemDto>(<any>null);
     }
 
     exportSalesInStoreDetail(input: GetSalesReportInput): Promise<FileDto> {
@@ -2236,36 +1312,19 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportSalesInStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportSalesInStoreDetail(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     getSalesOutStoreDetail(customerName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfSaleOutOrderItemDto> {
@@ -2282,34 +1341,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetSalesOutStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetSalesOutStoreDetail(response: Response): Promise<ListResultDtoOfSaleOutOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfSaleOutOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfSaleOutOrderItemDto>(<any>null);
     }
 
     exportSalesOutStoreDetail(input: GetSalesReportInput): Promise<FileDto> {
@@ -2318,36 +1360,19 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportSalesOutStoreDetail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportSalesOutStoreDetail(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     getSalesProductRanking(customerName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfSalesProductRankingDto> {
@@ -2364,34 +1389,17 @@ export class ReportServiceProxy {
             url_ += "OrderStatus=" + encodeURIComponent("" + orderStatus) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetSalesProductRanking(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetSalesProductRanking(response: Response): Promise<ListResultDtoOfSalesProductRankingDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfSalesProductRankingDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfSalesProductRankingDto>(<any>null);
     }
 
     exportSalesProductRanking(input: GetSalesReportInput): Promise<FileDto> {
@@ -2400,46 +1408,27 @@ export class ReportServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExportSalesProductRanking(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExportSalesProductRanking(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 }
 
 export class WarehouseServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -2449,36 +1438,19 @@ export class WarehouseServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<WarehouseDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = WarehouseDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<WarehouseDto>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfWarehouseDto> {
@@ -2502,34 +1474,17 @@ export class WarehouseServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfWarehouseDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfWarehouseDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfWarehouseDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -2539,30 +1494,16 @@ export class WarehouseServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<WarehouseDto> {
@@ -2572,34 +1513,17 @@ export class WarehouseServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<WarehouseDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = WarehouseDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<WarehouseDto>(<any>null);
     }
 
     update(id: string, input: WarehouseDto): Promise<WarehouseDto> {
@@ -2611,46 +1535,27 @@ export class WarehouseServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<WarehouseDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = WarehouseDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<WarehouseDto>(<any>null);
     }
 }
 
 export class UnitServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -2660,36 +1565,19 @@ export class UnitServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<UnitDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UnitDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UnitDto>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfUnitDto> {
@@ -2713,34 +1601,17 @@ export class UnitServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfUnitDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfUnitDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfUnitDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -2750,30 +1621,16 @@ export class UnitServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<UnitDto> {
@@ -2783,34 +1640,17 @@ export class UnitServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<UnitDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UnitDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UnitDto>(<any>null);
     }
 
     update(id: string, input: UnitDto): Promise<UnitDto> {
@@ -2822,74 +1662,36 @@ export class UnitServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<UnitDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UnitDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UnitDto>(<any>null);
     }
 
     getGroups(): Promise<string[]> {
         let url_ = this.baseUrl + "/api/api/psiapp/unit/groups";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetGroups(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetGroups(response: Response): Promise<string[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(item);
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<string[]>(<any>null);
     }
 
     getDefaultUnitByGroup(groupName: string | null | undefined): Promise<string> {
@@ -2898,44 +1700,25 @@ export class UnitServiceProxy {
             url_ += "groupName=" + encodeURIComponent("" + groupName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetDefaultUnitByGroup(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetDefaultUnitByGroup(response: Response): Promise<string> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<string>(<any>null);
     }
 }
 
 export class SupplierServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -2945,36 +1728,19 @@ export class SupplierServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<SupplierDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SupplierDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SupplierDto>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSupplierDto> {
@@ -2998,34 +1764,17 @@ export class SupplierServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfSupplierDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSupplierDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSupplierDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -3035,30 +1784,16 @@ export class SupplierServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<SupplierDto> {
@@ -3068,34 +1803,17 @@ export class SupplierServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<SupplierDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SupplierDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SupplierDto>(<any>null);
     }
 
     update(id: string, input: SupplierDto): Promise<SupplierDto> {
@@ -3107,36 +1825,19 @@ export class SupplierServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<SupplierDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SupplierDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SupplierDto>(<any>null);
     }
 
     createContact(input: SupplierContactDto): Promise<SupplierDto> {
@@ -3145,36 +1846,19 @@ export class SupplierServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreateContact(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreateContact(response: Response): Promise<SupplierDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SupplierDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SupplierDto>(<any>null);
     }
 
     updateContact(input: SupplierContactDto): Promise<SupplierDto> {
@@ -3183,36 +1867,19 @@ export class SupplierServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdateContact(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdateContact(response: Response): Promise<SupplierDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SupplierDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SupplierDto>(<any>null);
     }
 
     import(input: FileDto): Promise<void> {
@@ -3221,32 +1888,18 @@ export class SupplierServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processImport(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processImport(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     export(input: DynamicQueryInput): Promise<FileDto> {
@@ -3255,46 +1908,27 @@ export class SupplierServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExport(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExport(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 }
 
 export class SupplierPriceServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -3319,44 +1953,25 @@ export class SupplierPriceServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfSupplierPriceDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSupplierPriceDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSupplierPriceDto>(<any>null);
     }
 }
 
 export class StoreTransferServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -3367,30 +1982,16 @@ export class StoreTransferServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -3400,30 +2001,16 @@ export class StoreTransferServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: StoreTransferDto): Promise<StoreTransferDto> {
@@ -3432,36 +2019,19 @@ export class StoreTransferServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<StoreTransferDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StoreTransferDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<StoreTransferDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfStoreTransferDto> {
@@ -3485,34 +2055,17 @@ export class StoreTransferServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfStoreTransferDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfStoreTransferDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfStoreTransferDto>(<any>null);
     }
 
     update(input: StoreTransferDto): Promise<StoreTransferDto> {
@@ -3521,36 +2074,19 @@ export class StoreTransferServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<StoreTransferDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StoreTransferDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<StoreTransferDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -3560,30 +2096,16 @@ export class StoreTransferServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<StoreTransferDto> {
@@ -3593,44 +2115,25 @@ export class StoreTransferServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<StoreTransferDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = StoreTransferDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<StoreTransferDto>(<any>null);
     }
 }
 
 export class PSISettingServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -3638,34 +2141,17 @@ export class PSISettingServiceProxy {
         let url_ = this.baseUrl + "/api/api/psiapp/pSISetting";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PSISettingsEditDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PSISettingsEditDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PSISettingsEditDto>(<any>null);
     }
 
     updateAll(input: PSISettingsEditDto): Promise<void> {
@@ -3674,42 +2160,26 @@ export class PSISettingServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdateAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdateAll(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class SaleOutOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -3720,30 +2190,16 @@ export class SaleOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -3753,30 +2209,16 @@ export class SaleOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: SaleOutOrderDto): Promise<SaleOutOrderDto> {
@@ -3785,36 +2227,19 @@ export class SaleOutOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<SaleOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleOutOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSaleOutOrderDto> {
@@ -3838,34 +2263,17 @@ export class SaleOutOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfSaleOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSaleOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSaleOutOrderDto>(<any>null);
     }
 
     update(input: SaleOutOrderDto): Promise<SaleOutOrderDto> {
@@ -3874,36 +2282,19 @@ export class SaleOutOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<SaleOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleOutOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -3913,30 +2304,16 @@ export class SaleOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<SaleOutOrderDto> {
@@ -3946,34 +2323,17 @@ export class SaleOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<SaleOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleOutOrderDto>(<any>null);
     }
 
     getItemList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<ListResultDtoOfSaleOutOrderItemDto> {
@@ -3997,44 +2357,25 @@ export class SaleOutOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetItemList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetItemList(response: Response): Promise<ListResultDtoOfSaleOutOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfSaleOutOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfSaleOutOrderItemDto>(<any>null);
     }
 }
 
 export class SaleOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -4045,30 +2386,16 @@ export class SaleOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -4078,30 +2405,16 @@ export class SaleOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     cancelClose(id: string): Promise<void> {
@@ -4111,30 +2424,16 @@ export class SaleOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCancelClose(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCancelClose(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     close(id: string): Promise<void> {
@@ -4144,30 +2443,16 @@ export class SaleOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processClose(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processClose(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: SaleOrderDto): Promise<SaleOrderDto> {
@@ -4176,36 +2461,19 @@ export class SaleOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<SaleOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSaleOrderDto> {
@@ -4229,34 +2497,17 @@ export class SaleOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfSaleOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSaleOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSaleOrderDto>(<any>null);
     }
 
     update(input: SaleOrderDto): Promise<SaleOrderDto> {
@@ -4265,36 +2516,19 @@ export class SaleOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<SaleOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -4304,30 +2538,16 @@ export class SaleOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<SaleOrderDto> {
@@ -4337,34 +2557,17 @@ export class SaleOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<SaleOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleOrderDto>(<any>null);
     }
 
     getNotCompletedItem(customerId: string | undefined): Promise<ListResultDtoOfSaleOrderItemDto> {
@@ -4375,44 +2578,25 @@ export class SaleOrderServiceProxy {
             url_ += "CustomerId=" + encodeURIComponent("" + customerId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetNotCompletedItem(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetNotCompletedItem(response: Response): Promise<ListResultDtoOfSaleOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfSaleOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfSaleOrderItemDto>(<any>null);
     }
 }
 
 export class SaleInOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -4423,30 +2607,16 @@ export class SaleInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -4456,30 +2626,16 @@ export class SaleInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: SaleInOrderDto): Promise<SaleInOrderDto> {
@@ -4488,36 +2644,19 @@ export class SaleInOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<SaleInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleInOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSaleInOrderDto> {
@@ -4541,34 +2680,17 @@ export class SaleInOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfSaleInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSaleInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSaleInOrderDto>(<any>null);
     }
 
     update(input: SaleInOrderDto): Promise<SaleInOrderDto> {
@@ -4577,36 +2699,19 @@ export class SaleInOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<SaleInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleInOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -4616,30 +2721,16 @@ export class SaleInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<SaleInOrderDto> {
@@ -4649,44 +2740,25 @@ export class SaleInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<SaleInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SaleInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SaleInOrderDto>(<any>null);
     }
 }
 
 export class SafetyStockServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -4696,32 +2768,18 @@ export class SafetyStockServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSafetyStockDto> {
@@ -4745,34 +2803,17 @@ export class SafetyStockServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfSafetyStockDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSafetyStockDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSafetyStockDto>(<any>null);
     }
 
     update(input: SafetyStockDto): Promise<void> {
@@ -4781,32 +2822,18 @@ export class SafetyStockServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -4816,30 +2843,16 @@ export class SafetyStockServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<SafetyStockDto> {
@@ -4849,34 +2862,17 @@ export class SafetyStockServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<SafetyStockDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = SafetyStockDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SafetyStockDto>(<any>null);
     }
 
     getWarningList(sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Promise<PagedResultDtoOfSafetyStockWarningDto> {
@@ -4893,44 +2889,25 @@ export class SafetyStockServiceProxy {
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetWarningList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetWarningList(response: Response): Promise<PagedResultDtoOfSafetyStockWarningDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfSafetyStockWarningDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfSafetyStockWarningDto>(<any>null);
     }
 }
 
 export class QuotationOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -4941,30 +2918,16 @@ export class QuotationOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: QuotationOrderDto): Promise<QuotationOrderDto> {
@@ -4973,36 +2936,19 @@ export class QuotationOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<QuotationOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = QuotationOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<QuotationOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfQuotationOrderDto> {
@@ -5026,34 +2972,17 @@ export class QuotationOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfQuotationOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfQuotationOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfQuotationOrderDto>(<any>null);
     }
 
     update(id: string | undefined, input: QuotationOrderDto): Promise<QuotationOrderDto> {
@@ -5066,36 +2995,19 @@ export class QuotationOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<QuotationOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = QuotationOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<QuotationOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -5105,30 +3017,16 @@ export class QuotationOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<QuotationOrderDto> {
@@ -5138,44 +3036,25 @@ export class QuotationOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<QuotationOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = QuotationOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<QuotationOrderDto>(<any>null);
     }
 }
 
 export class PurchaseRequestOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -5186,30 +3065,16 @@ export class PurchaseRequestOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -5219,30 +3084,16 @@ export class PurchaseRequestOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     cancelClose(id: string): Promise<void> {
@@ -5252,30 +3103,16 @@ export class PurchaseRequestOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCancelClose(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCancelClose(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     close(id: string): Promise<void> {
@@ -5285,30 +3122,16 @@ export class PurchaseRequestOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processClose(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processClose(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: PurchaseRequestOrderDto): Promise<PurchaseRequestOrderDto> {
@@ -5317,36 +3140,19 @@ export class PurchaseRequestOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<PurchaseRequestOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseRequestOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseRequestOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfPurchaseRequestOrderDto> {
@@ -5370,34 +3176,17 @@ export class PurchaseRequestOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfPurchaseRequestOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfPurchaseRequestOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfPurchaseRequestOrderDto>(<any>null);
     }
 
     update(input: PurchaseRequestOrderDto): Promise<PurchaseRequestOrderDto> {
@@ -5406,36 +3195,19 @@ export class PurchaseRequestOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<PurchaseRequestOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseRequestOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseRequestOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -5445,30 +3217,16 @@ export class PurchaseRequestOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<PurchaseRequestOrderDto> {
@@ -5478,44 +3236,25 @@ export class PurchaseRequestOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<PurchaseRequestOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseRequestOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseRequestOrderDto>(<any>null);
     }
 }
 
 export class PurchaseOutOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -5526,30 +3265,16 @@ export class PurchaseOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -5559,30 +3284,16 @@ export class PurchaseOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: PurchaseOutOrderDto): Promise<PurchaseOutOrderDto> {
@@ -5591,36 +3302,19 @@ export class PurchaseOutOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<PurchaseOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseOutOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfPurchaseOutOrderDto> {
@@ -5644,34 +3338,17 @@ export class PurchaseOutOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfPurchaseOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfPurchaseOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfPurchaseOutOrderDto>(<any>null);
     }
 
     update(input: PurchaseOutOrderDto): Promise<PurchaseOutOrderDto> {
@@ -5680,36 +3357,19 @@ export class PurchaseOutOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<PurchaseOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseOutOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -5719,30 +3379,16 @@ export class PurchaseOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<PurchaseOutOrderDto> {
@@ -5752,44 +3398,25 @@ export class PurchaseOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<PurchaseOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseOutOrderDto>(<any>null);
     }
 }
 
 export class PurchaseOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -5800,30 +3427,16 @@ export class PurchaseOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -5833,30 +3446,16 @@ export class PurchaseOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     close(id: string): Promise<void> {
@@ -5866,30 +3465,16 @@ export class PurchaseOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processClose(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processClose(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     cancelClose(id: string): Promise<void> {
@@ -5899,30 +3484,16 @@ export class PurchaseOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCancelClose(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCancelClose(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: PurchaseOrderDto): Promise<PurchaseOrderDto> {
@@ -5931,36 +3502,19 @@ export class PurchaseOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<PurchaseOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfPurchaseOrderDto> {
@@ -5984,34 +3538,17 @@ export class PurchaseOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfPurchaseOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfPurchaseOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfPurchaseOrderDto>(<any>null);
     }
 
     update(input: PurchaseOrderDto): Promise<PurchaseOrderDto> {
@@ -6020,36 +3557,19 @@ export class PurchaseOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<PurchaseOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -6059,30 +3579,16 @@ export class PurchaseOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<PurchaseOrderDto> {
@@ -6092,34 +3598,17 @@ export class PurchaseOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<PurchaseOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseOrderDto>(<any>null);
     }
 
     getNotCompletedItem(supplierId: string | undefined, filter: string | null | undefined): Promise<ListResultDtoOfPurchaseOrderItemDto> {
@@ -6132,44 +3621,25 @@ export class PurchaseOrderServiceProxy {
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetNotCompletedItem(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetNotCompletedItem(response: Response): Promise<ListResultDtoOfPurchaseOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfPurchaseOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfPurchaseOrderItemDto>(<any>null);
     }
 }
 
 export class PurchaseInOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -6180,30 +3650,16 @@ export class PurchaseInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -6213,30 +3669,16 @@ export class PurchaseInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: PurchaseInOrderDto): Promise<PurchaseInOrderDto> {
@@ -6245,36 +3687,19 @@ export class PurchaseInOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<PurchaseInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseInOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfPurchaseInOrderDto> {
@@ -6298,34 +3723,17 @@ export class PurchaseInOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfPurchaseInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfPurchaseInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfPurchaseInOrderDto>(<any>null);
     }
 
     update(input: PurchaseInOrderDto): Promise<PurchaseInOrderDto> {
@@ -6334,36 +3742,19 @@ export class PurchaseInOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<PurchaseInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseInOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -6373,30 +3764,16 @@ export class PurchaseInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<PurchaseInOrderDto> {
@@ -6406,34 +3783,17 @@ export class PurchaseInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<PurchaseInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PurchaseInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PurchaseInOrderDto>(<any>null);
     }
 
     getItemList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<ListResultDtoOfPurchaseInOrderItemDto> {
@@ -6457,44 +3817,25 @@ export class PurchaseInOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetItemList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetItemList(response: Response): Promise<ListResultDtoOfPurchaseInOrderItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfPurchaseInOrderItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfPurchaseInOrderItemDto>(<any>null);
     }
 }
 
 export class ProductServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -6504,36 +3845,19 @@ export class ProductServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<ProductDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductDto>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfProductDto> {
@@ -6557,34 +3881,17 @@ export class ProductServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfProductDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfProductDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfProductDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -6594,30 +3901,16 @@ export class ProductServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<ProductDto> {
@@ -6627,34 +3920,17 @@ export class ProductServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<ProductDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductDto>(<any>null);
     }
 
     update(id: string, input: ProductDto): Promise<ProductDto> {
@@ -6666,36 +3942,19 @@ export class ProductServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<ProductDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductDto>(<any>null);
     }
 
     getWithInventory(id: string): Promise<ProductWithInventory> {
@@ -6705,34 +3964,17 @@ export class ProductServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetWithInventory(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetWithInventory(response: Response): Promise<ProductWithInventory> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductWithInventory.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductWithInventory>(<any>null);
     }
 
     import(input: FileDto): Promise<void> {
@@ -6741,32 +3983,18 @@ export class ProductServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processImport(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processImport(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     export(input: DynamicQueryInput): Promise<FileDto> {
@@ -6775,46 +4003,27 @@ export class ProductServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExport(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExport(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 }
 
 export class ProductCategoryServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -6824,36 +4033,19 @@ export class ProductCategoryServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<ProductCategoryDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductCategoryDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductCategoryDto>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfProductCategoryDto> {
@@ -6877,34 +4069,17 @@ export class ProductCategoryServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfProductCategoryDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfProductCategoryDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfProductCategoryDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -6914,30 +4089,16 @@ export class ProductCategoryServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<ProductCategoryDto> {
@@ -6947,34 +4108,17 @@ export class ProductCategoryServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<ProductCategoryDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductCategoryDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductCategoryDto>(<any>null);
     }
 
     update(id: string, input: ProductCategoryDto): Promise<ProductCategoryDto> {
@@ -6986,46 +4130,27 @@ export class ProductCategoryServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<ProductCategoryDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductCategoryDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ProductCategoryDto>(<any>null);
     }
 }
 
 export class PriceServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -7049,34 +4174,17 @@ export class PriceServiceProxy {
             url_ += "quantity=" + encodeURIComponent("" + quantity) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetPurchasePrice(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetPurchasePrice(response: Response): Promise<number> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<number>(<any>null);
     }
 
     getSalesPrice(customerId: string | undefined, productId: string | undefined, unitId: string | undefined, quantity: number | undefined): Promise<number> {
@@ -7099,44 +4207,25 @@ export class PriceServiceProxy {
             url_ += "quantity=" + encodeURIComponent("" + quantity) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetSalesPrice(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetSalesPrice(response: Response): Promise<number> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<number>(<any>null);
     }
 }
 
 export class PriceAjustmentOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -7147,30 +4236,16 @@ export class PriceAjustmentOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: PriceAjustmentOrderDto): Promise<PriceAjustmentOrderDto> {
@@ -7179,36 +4254,19 @@ export class PriceAjustmentOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<PriceAjustmentOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PriceAjustmentOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PriceAjustmentOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfPriceAjustmentOrderDto> {
@@ -7232,34 +4290,17 @@ export class PriceAjustmentOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfPriceAjustmentOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfPriceAjustmentOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfPriceAjustmentOrderDto>(<any>null);
     }
 
     update(id: string | undefined, input: PriceAjustmentOrderDto): Promise<PriceAjustmentOrderDto> {
@@ -7272,36 +4313,19 @@ export class PriceAjustmentOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<PriceAjustmentOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PriceAjustmentOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PriceAjustmentOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -7311,30 +4335,16 @@ export class PriceAjustmentOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<PriceAjustmentOrderDto> {
@@ -7344,44 +4354,25 @@ export class PriceAjustmentOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<PriceAjustmentOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PriceAjustmentOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PriceAjustmentOrderDto>(<any>null);
     }
 }
 
 export class OtherOutOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -7392,30 +4383,16 @@ export class OtherOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -7425,30 +4402,16 @@ export class OtherOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: OtherOutOrderDto): Promise<OtherOutOrderDto> {
@@ -7457,36 +4420,19 @@ export class OtherOutOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<OtherOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OtherOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<OtherOutOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfOtherOutOrderDto> {
@@ -7510,34 +4456,17 @@ export class OtherOutOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfOtherOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfOtherOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfOtherOutOrderDto>(<any>null);
     }
 
     update(input: OtherOutOrderDto): Promise<OtherOutOrderDto> {
@@ -7546,36 +4475,19 @@ export class OtherOutOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<OtherOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OtherOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<OtherOutOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -7585,30 +4497,16 @@ export class OtherOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<OtherOutOrderDto> {
@@ -7618,44 +4516,25 @@ export class OtherOutOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<OtherOutOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OtherOutOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<OtherOutOrderDto>(<any>null);
     }
 }
 
 export class OtherInOrderServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -7666,30 +4545,16 @@ export class OtherInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAntiReview(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAntiReview(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     audit(id: string): Promise<void> {
@@ -7699,30 +4564,16 @@ export class OtherInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processAudit(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processAudit(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: OtherInOrderDto): Promise<OtherInOrderDto> {
@@ -7731,36 +4582,19 @@ export class OtherInOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<OtherInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OtherInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<OtherInOrderDto>(<any>null);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfOtherInOrderDto> {
@@ -7784,34 +4618,17 @@ export class OtherInOrderServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfOtherInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfOtherInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfOtherInOrderDto>(<any>null);
     }
 
     update(input: OtherInOrderDto): Promise<OtherInOrderDto> {
@@ -7820,36 +4637,19 @@ export class OtherInOrderServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<OtherInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OtherInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<OtherInOrderDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -7859,30 +4659,16 @@ export class OtherInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<OtherInOrderDto> {
@@ -7892,44 +4678,25 @@ export class OtherInOrderServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<OtherInOrderDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = OtherInOrderDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<OtherInOrderDto>(<any>null);
     }
 }
 
 export class InventoryServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -7954,44 +4721,25 @@ export class InventoryServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAll(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAll(response: Response): Promise<PagedResultDtoOfInventoryDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfInventoryDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfInventoryDto>(<any>null);
     }
 }
 
 export class FakerDataServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -7999,40 +4747,24 @@ export class FakerDataServiceProxy {
         let url_ = this.baseUrl + "/api/api/psiapp/fakerData/generateData";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGenerateData(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGenerateData(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class CustomerServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -8042,36 +4774,19 @@ export class CustomerServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<CustomerDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomerDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<CustomerDto>(<any>null);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfCustomerDto> {
@@ -8095,34 +4810,17 @@ export class CustomerServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfCustomerDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfCustomerDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfCustomerDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -8132,30 +4830,16 @@ export class CustomerServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<CustomerDto> {
@@ -8165,34 +4849,17 @@ export class CustomerServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<CustomerDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomerDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<CustomerDto>(<any>null);
     }
 
     update(id: string, input: CustomerDto): Promise<CustomerDto> {
@@ -8204,36 +4871,19 @@ export class CustomerServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<CustomerDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomerDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<CustomerDto>(<any>null);
     }
 
     createContact(input: CustomerContactDto): Promise<CustomerDto> {
@@ -8242,36 +4892,19 @@ export class CustomerServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreateContact(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreateContact(response: Response): Promise<CustomerDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomerDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<CustomerDto>(<any>null);
     }
 
     updateContact(input: CustomerContactDto): Promise<CustomerDto> {
@@ -8280,36 +4913,19 @@ export class CustomerServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdateContact(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdateContact(response: Response): Promise<CustomerDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomerDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<CustomerDto>(<any>null);
     }
 
     import(input: FileDto): Promise<void> {
@@ -8318,32 +4934,18 @@ export class CustomerServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processImport(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processImport(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     export(input: DynamicQueryInput): Promise<FileDto> {
@@ -8352,46 +4954,27 @@ export class CustomerServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processExport(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processExport(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 }
 
 export class CustomerPriceServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -8416,44 +4999,25 @@ export class CustomerPriceServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfCustomerPriceDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfCustomerPriceDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfCustomerPriceDto>(<any>null);
     }
 }
 
 export class DictionaryServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -8461,38 +5025,17 @@ export class DictionaryServiceProxy {
         let url_ = this.baseUrl + "/api/app/dictionary/list";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAllList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAllList(response: Response): Promise<DictionaryItemDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DictionaryItemDto.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DictionaryItemDto[]>(<any>null);
     }
 
     getCategoryList(groupName: string | null | undefined): Promise<DictionaryCategoryDto[]> {
@@ -8501,38 +5044,17 @@ export class DictionaryServiceProxy {
             url_ += "groupName=" + encodeURIComponent("" + groupName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetCategoryList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetCategoryList(response: Response): Promise<DictionaryCategoryDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DictionaryCategoryDto.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DictionaryCategoryDto[]>(<any>null);
     }
 
     getItemList(groupName: string | null | undefined, name: string | null | undefined): Promise<DictionaryItemDto[]> {
@@ -8543,38 +5065,17 @@ export class DictionaryServiceProxy {
             url_ += "name=" + encodeURIComponent("" + name) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetItemList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetItemList(response: Response): Promise<DictionaryItemDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(DictionaryItemDto.fromJS(item));
-            }
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DictionaryItemDto[]>(<any>null);
     }
 
     getItem(groupName: string | null | undefined, name: string | null | undefined, value: string | null | undefined): Promise<DictionaryItemDto> {
@@ -8587,34 +5088,17 @@ export class DictionaryServiceProxy {
             url_ += "value=" + encodeURIComponent("" + value) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetItem(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetItem(response: Response): Promise<DictionaryItemDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = DictionaryItemDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DictionaryItemDto>(<any>null);
     }
 
     setItem(groupName: string | null | undefined, name: string | null | undefined, value: string | null | undefined, displayValue: string | null | undefined, isDisable: boolean | undefined): Promise<void> {
@@ -8633,40 +5117,24 @@ export class DictionaryServiceProxy {
             url_ += "isDisable=" + encodeURIComponent("" + isDisable) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processSetItem(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processSetItem(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class ZeroSettingServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -8674,68 +5142,34 @@ export class ZeroSettingServiceProxy {
         let url_ = this.baseUrl + "/api/app/zeroSetting/emailSettings";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAllEmailSettings(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAllEmailSettings(response: Response): Promise<ZeroEmailSettingDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ZeroEmailSettingDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ZeroEmailSettingDto>(<any>null);
     }
 
     getAllSecuritySettings(): Promise<ZeroSecuritySettingDto> {
         let url_ = this.baseUrl + "/api/app/zeroSetting/securitySettings";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetAllSecuritySettings(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetAllSecuritySettings(response: Response): Promise<ZeroSecuritySettingDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ZeroSecuritySettingDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ZeroSecuritySettingDto>(<any>null);
     }
 
     updteAllEmailSettings(input: ZeroEmailSettingDto): Promise<void> {
@@ -8744,32 +5178,18 @@ export class ZeroSettingServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdteAllEmailSettings(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdteAllEmailSettings(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     updteAllSecuritySettings(input: ZeroSecuritySettingDto): Promise<void> {
@@ -8778,42 +5198,26 @@ export class ZeroSettingServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdteAllSecuritySettings(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdteAllSecuritySettings(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class AuditLogServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -8838,34 +5242,17 @@ export class AuditLogServiceProxy {
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfAuditLogListDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfAuditLogListDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfAuditLogListDto>(<any>null);
     }
 
     getEntityHistorys(skipCount: number | undefined, maxResultCount: number | undefined, entityName: string | null | undefined, entityKey: string | null | undefined): Promise<PagedResultDtoOfAuditLogListDto> {
@@ -8884,34 +5271,17 @@ export class AuditLogServiceProxy {
             url_ += "EntityKey=" + encodeURIComponent("" + entityKey) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetEntityHistorys(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetEntityHistorys(response: Response): Promise<PagedResultDtoOfAuditLogListDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfAuditLogListDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfAuditLogListDto>(<any>null);
     }
 
     get(id: string): Promise<AuditLogListDto> {
@@ -8921,44 +5291,25 @@ export class AuditLogServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<AuditLogListDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AuditLogListDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AuditLogListDto>(<any>null);
     }
 }
 
 export class AnubUserServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -8970,30 +5321,16 @@ export class AnubUserServiceProxy {
             url_ += "newPassword=" + encodeURIComponent("" + newPassword) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processChangePassword(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processChangePassword(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     create(input: AnubUserCreateDto): Promise<AnubUserDto> {
@@ -9002,36 +5339,19 @@ export class AnubUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<AnubUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AnubUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AnubUserDto>(<any>null);
     }
 
     getList(filter: string | null | undefined, sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Promise<PagedResultDtoOfAnubUserDto> {
@@ -9050,34 +5370,17 @@ export class AnubUserServiceProxy {
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<PagedResultDtoOfAnubUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfAnubUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<PagedResultDtoOfAnubUserDto>(<any>null);
     }
 
     delete(id: string): Promise<void> {
@@ -9087,30 +5390,16 @@ export class AnubUserServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "DELETE",
-            headers: {
+            header: {
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDelete(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     get(id: string): Promise<AnubUserDto> {
@@ -9120,34 +5409,17 @@ export class AnubUserServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGet(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGet(response: Response): Promise<AnubUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AnubUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AnubUserDto>(<any>null);
     }
 
     update(id: string, input: AnubUserUpdateDto): Promise<AnubUserDto> {
@@ -9159,36 +5431,19 @@ export class AnubUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdate(response: Response): Promise<AnubUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AnubUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AnubUserDto>(<any>null);
     }
 
     findByEmail(email: string | null | undefined): Promise<AnubUserDto> {
@@ -9197,34 +5452,17 @@ export class AnubUserServiceProxy {
             url_ += "email=" + encodeURIComponent("" + email) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindByEmail(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindByEmail(response: Response): Promise<AnubUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AnubUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AnubUserDto>(<any>null);
     }
 
     findByUsername(username: string | null | undefined): Promise<AnubUserDto> {
@@ -9233,34 +5471,17 @@ export class AnubUserServiceProxy {
             url_ += "username=" + encodeURIComponent("" + username) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processFindByUsername(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processFindByUsername(response: Response): Promise<AnubUserDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AnubUserDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AnubUserDto>(<any>null);
     }
 
     getRoles(id: string): Promise<ListResultDtoOfIdentityRoleDto> {
@@ -9270,34 +5491,17 @@ export class AnubUserServiceProxy {
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetRoles(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetRoles(response: Response): Promise<ListResultDtoOfIdentityRoleDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfIdentityRoleDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfIdentityRoleDto>(<any>null);
     }
 
     updateRoles(id: string, input: IdentityUserUpdateRolesDto): Promise<void> {
@@ -9309,32 +5513,18 @@ export class AnubUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdateRoles(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdateRoles(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     updateProfilePicture(input: FileDto): Promise<void> {
@@ -9343,42 +5533,26 @@ export class AnubUserServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "PUT",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpdateProfilePicture(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpdateProfilePicture(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class ReportTemplateServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -9388,32 +5562,18 @@ export class ReportTemplateServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processCreate(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processCreate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 
     getList(name: string | null | undefined): Promise<ListResultDtoOfReportTemplateDto> {
@@ -9422,34 +5582,17 @@ export class ReportTemplateServiceProxy {
             url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<ListResultDtoOfReportTemplateDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfReportTemplateDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfReportTemplateDto>(<any>null);
     }
 
     download(name: string | null | undefined, templateName: string | null | undefined): Promise<FileDto> {
@@ -9460,34 +5603,17 @@ export class ReportTemplateServiceProxy {
             url_ += "templateName=" + encodeURIComponent("" + templateName) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "POST",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processDownload(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processDownload(response: Response): Promise<FileDto> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileDto>(<any>null);
     }
 
     upload(input: UploadTemplateInput): Promise<void> {
@@ -9496,42 +5622,26 @@ export class ReportTemplateServiceProxy {
 
         const content_ = JSON.stringify(input);
 
-        let options_ = <RequestInit>{
-            body: content_,
+        let options_:request.Param = {
+            url: url_,
+            data: content_,
             method: "POST",
-            headers: {
+            header: {
                 "Content-Type": "application/json",
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processUpload(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processUpload(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(<any>null);
     }
 }
 
 export class RecentAccessServiceProxy {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : <any>window;
+    constructor(baseUrl?: string) {
         this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
     }
 
@@ -9539,34 +5649,17 @@ export class RecentAccessServiceProxy {
         let url_ = this.baseUrl + "/api/api/recent/recentAccess";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_ = <RequestInit>{
+        let options_:request.Param = {
+            url: url_,
             method: "GET",
-            headers: {
+            header: {
                 "Accept": "application/json"
             }
         };
 
-        return Test.then((_response: Response) => {
-            return this.processGetList(_response);
+        return Taro.request({...options_}).then((_response) => {
+            return _response.data;
         });
-    }
-
-    protected processGetList(response: Response): Promise<ListResultDtoOfApplicationMenuItem> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResultDtoOfApplicationMenuItem.fromJS(resultData200);
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ListResultDtoOfApplicationMenuItem>(<any>null);
     }
 }
 
@@ -19795,8 +15888,4 @@ function throwException(message: string, status: number, response: string, heade
         throw result;
     else
         throw new SwaggerException(message, status, response, headers, null);
-}
-
-class ClientBase {
-
 }
