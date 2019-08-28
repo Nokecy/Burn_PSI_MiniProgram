@@ -41,6 +41,12 @@ class App extends Component {
       'pages/profile/index',//用户页
 
       'pages/app/base/category/index',//存货分类
+      'pages/app/base/customer/index',//客户管理
+      'pages/app/base/product/index',//存货管理
+      'pages/app/base/safetyStock/index',//安全库存
+      'pages/app/base/supplier/index',//供应商管理
+      'pages/app/base/unit/index',//计量单位
+      'pages/app/base/warehouse/index',//仓库管理
     ],
     tabBar: {
       color: '#666',
@@ -68,6 +74,7 @@ class App extends Component {
       ]
     },
     window: {
+      backgroundColor: '#d8d8d8',
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',

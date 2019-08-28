@@ -1,5 +1,5 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
-import { UnitServiceProxy as ServiceProxy, PagedResultDtoOfUnitDto, UnitDto } from "ApiService";
+import { UnitServiceProxy as ServiceProxy, PagedResultDtoOfUnitDto, UnitDto } from "../../../../services/service-proxies";
 const namespace = "unit";
 
 export interface UnitProps {

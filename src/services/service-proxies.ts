@@ -9,13 +9,19 @@
 
 import moment from 'moment';
 import Taro, { request } from '@tarojs/taro';
+export class ClientBase {
+    protected getBaseUrl(defaultUrl: string, baseUrl?: string) {
+        return baseUrl ? baseUrl : defaultUrl;
+    }
+}
 
-export class AttachmentServiceProxy {
+export class AttachmentServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     upload(contentType: string | null | undefined, contentDisposition: string | null | undefined, headers: IHeaderDictionary | null | undefined, length: number | undefined, name: string | null | undefined, fileName: string | null | undefined): Promise<FileResponse> {
@@ -70,12 +76,13 @@ export class AttachmentServiceProxy {
     }
 }
 
-export class ProfilePictureServiceProxy {
+export class ProfilePictureServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(id: string | null | undefined): Promise<FileResponse> {
@@ -98,12 +105,13 @@ export class ProfilePictureServiceProxy {
     }
 }
 
-export class TokenAuthServiceProxy {
+export class TokenAuthServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     authenticate(model: AuthenticateModel): Promise<AuthenticateResultModel> {
@@ -128,12 +136,13 @@ export class TokenAuthServiceProxy {
     }
 }
 
-export class SettingPageServiceProxy {
+export class SettingPageServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getGroups(): Promise<SettingPageGroupDto[]> {
@@ -154,12 +163,13 @@ export class SettingPageServiceProxy {
     }
 }
 
-export class AbpServiceProxyScriptServiceProxy {
+export class AbpServiceProxyScriptServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getAll(type: string | null | undefined, useCache: boolean | undefined, modules: string | null | undefined, controllers: string | null | undefined, actions: string | null | undefined): Promise<string> {
@@ -192,12 +202,13 @@ export class AbpServiceProxyScriptServiceProxy {
     }
 }
 
-export class AbpLanguagesServiceProxy {
+export class AbpLanguagesServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     switch(culture: string | null | undefined, uiCulture: string | null | undefined, returnUrl: string | null | undefined): Promise<FileResponse> {
@@ -224,12 +235,13 @@ export class AbpLanguagesServiceProxy {
     }
 }
 
-export class AbpApplicationConfigurationScriptServiceProxy {
+export class AbpApplicationConfigurationScriptServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(): Promise<string> {
@@ -250,12 +262,13 @@ export class AbpApplicationConfigurationScriptServiceProxy {
     }
 }
 
-export class AbpLocalizationDefinitionServiceProxy {
+export class AbpLocalizationDefinitionServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(): Promise<LanguageSwitchViewComponentModel> {
@@ -276,12 +289,13 @@ export class AbpLocalizationDefinitionServiceProxy {
     }
 }
 
-export class AbpMenuDefinitionServiceProxy {
+export class AbpMenuDefinitionServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(): Promise<ApplicationMenuModel> {
@@ -302,12 +316,13 @@ export class AbpMenuDefinitionServiceProxy {
     }
 }
 
-export class AbpTenantServiceProxy {
+export class AbpTenantServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     findTenant(name: string | null): Promise<FindTenantResult> {
@@ -331,12 +346,13 @@ export class AbpTenantServiceProxy {
     }
 }
 
-export class DataPermissionServiceProxy {
+export class DataPermissionServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: NameValue): Promise<void> {
@@ -470,12 +486,13 @@ export class DataPermissionServiceProxy {
     }
 }
 
-export class AccountServiceProxy {
+export class AccountServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     register(input: RegisterDto): Promise<IdentityUserDto> {
@@ -542,12 +559,13 @@ export class AccountServiceProxy {
     }
 }
 
-export class AbpApplicationConfigurationServiceProxy {
+export class AbpApplicationConfigurationServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(): Promise<ApplicationConfigurationDto> {
@@ -568,12 +586,13 @@ export class AbpApplicationConfigurationServiceProxy {
     }
 }
 
-export class AbpApiDefinitionServiceProxy {
+export class AbpApiDefinitionServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(): Promise<ApplicationApiDescriptionModel> {
@@ -594,12 +613,13 @@ export class AbpApiDefinitionServiceProxy {
     }
 }
 
-export class IdentityRoleServiceProxy {
+export class IdentityRoleServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getList(): Promise<ListResultDtoOfIdentityRoleDto> {
@@ -704,12 +724,13 @@ export class IdentityRoleServiceProxy {
     }
 }
 
-export class IdentityUserServiceProxy {
+export class IdentityUserServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(id: string): Promise<IdentityUserDto> {
@@ -909,12 +930,13 @@ export class IdentityUserServiceProxy {
     }
 }
 
-export class IdentityUserLookupServiceProxy {
+export class IdentityUserLookupServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     findById(id: string): Promise<UserData> {
@@ -958,12 +980,13 @@ export class IdentityUserLookupServiceProxy {
     }
 }
 
-export class ProfileServiceProxy {
+export class ProfileServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(): Promise<ProfileDto> {
@@ -1025,12 +1048,13 @@ export class ProfileServiceProxy {
     }
 }
 
-export class PermissionsServiceProxy {
+export class PermissionsServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     get(providerName: string | null | undefined, providerKey: string | null | undefined): Promise<GetPermissionListResultDto> {
@@ -1079,12 +1103,13 @@ export class PermissionsServiceProxy {
     }
 }
 
-export class ReportServiceProxy {
+export class ReportServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getPurchaseExecution(supplierName: string | null | undefined, productName: string | null | undefined, startDate: moment.Moment | null | undefined, endDate: moment.Moment | null | undefined, orderStatus: number | null | undefined): Promise<ListResultDtoOfPurchaseOrderItemDto> {
@@ -1424,12 +1449,13 @@ export class ReportServiceProxy {
     }
 }
 
-export class WarehouseServiceProxy {
+export class WarehouseServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: WarehouseDto): Promise<WarehouseDto> {
@@ -1551,12 +1577,13 @@ export class WarehouseServiceProxy {
     }
 }
 
-export class UnitServiceProxy {
+export class UnitServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: UnitDto): Promise<UnitDto> {
@@ -1714,12 +1741,13 @@ export class UnitServiceProxy {
     }
 }
 
-export class SupplierServiceProxy {
+export class SupplierServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: SupplierDto): Promise<SupplierDto> {
@@ -1924,12 +1952,13 @@ export class SupplierServiceProxy {
     }
 }
 
-export class SupplierPriceServiceProxy {
+export class SupplierPriceServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSupplierPriceDto> {
@@ -1967,12 +1996,13 @@ export class SupplierPriceServiceProxy {
     }
 }
 
-export class StoreTransferServiceProxy {
+export class StoreTransferServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -2129,12 +2159,13 @@ export class StoreTransferServiceProxy {
     }
 }
 
-export class PSISettingServiceProxy {
+export class PSISettingServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getAll(): Promise<PSISettingsEditDto> {
@@ -2175,12 +2206,13 @@ export class PSISettingServiceProxy {
     }
 }
 
-export class SaleOutOrderServiceProxy {
+export class SaleOutOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -2371,12 +2403,13 @@ export class SaleOutOrderServiceProxy {
     }
 }
 
-export class SaleOrderServiceProxy {
+export class SaleOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -2592,12 +2625,13 @@ export class SaleOrderServiceProxy {
     }
 }
 
-export class SaleInOrderServiceProxy {
+export class SaleInOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -2754,12 +2788,13 @@ export class SaleInOrderServiceProxy {
     }
 }
 
-export class SafetyStockServiceProxy {
+export class SafetyStockServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: SafetyStockDto): Promise<void> {
@@ -2875,10 +2910,8 @@ export class SafetyStockServiceProxy {
         });
     }
 
-    getWarningList(sorting: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Promise<PagedResultDtoOfSafetyStockWarningDto> {
+    getWarningList(skipCount: number | undefined, maxResultCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfSafetyStockWarningDto> {
         let url_ = this.baseUrl + "/api/api/psiapp/safetyStock/warningList?";
-        if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (skipCount === null)
             throw new Error("The parameter 'skipCount' cannot be null.");
         else if (skipCount !== undefined)
@@ -2887,6 +2920,8 @@ export class SafetyStockServiceProxy {
             throw new Error("The parameter 'maxResultCount' cannot be null.");
         else if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_:request.Param = {
@@ -2903,12 +2938,13 @@ export class SafetyStockServiceProxy {
     }
 }
 
-export class QuotationOrderServiceProxy {
+export class QuotationOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     audit(id: string): Promise<void> {
@@ -3050,12 +3086,13 @@ export class QuotationOrderServiceProxy {
     }
 }
 
-export class PurchaseRequestOrderServiceProxy {
+export class PurchaseRequestOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -3250,12 +3287,13 @@ export class PurchaseRequestOrderServiceProxy {
     }
 }
 
-export class PurchaseOutOrderServiceProxy {
+export class PurchaseOutOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -3412,12 +3450,13 @@ export class PurchaseOutOrderServiceProxy {
     }
 }
 
-export class PurchaseOrderServiceProxy {
+export class PurchaseOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -3635,12 +3674,13 @@ export class PurchaseOrderServiceProxy {
     }
 }
 
-export class PurchaseInOrderServiceProxy {
+export class PurchaseInOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -3831,12 +3871,13 @@ export class PurchaseInOrderServiceProxy {
     }
 }
 
-export class ProductServiceProxy {
+export class ProductServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: ProductDto): Promise<ProductDto> {
@@ -4019,12 +4060,13 @@ export class ProductServiceProxy {
     }
 }
 
-export class ProductCategoryServiceProxy {
+export class ProductCategoryServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: ProductCategoryDto): Promise<ProductCategoryDto> {
@@ -4146,12 +4188,13 @@ export class ProductCategoryServiceProxy {
     }
 }
 
-export class PriceServiceProxy {
+export class PriceServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getPurchasePrice(supplierId: string | undefined, productId: string | undefined, unitId: string | undefined, quantity: number | undefined): Promise<number> {
@@ -4221,12 +4264,13 @@ export class PriceServiceProxy {
     }
 }
 
-export class PriceAjustmentOrderServiceProxy {
+export class PriceAjustmentOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     audit(id: string): Promise<void> {
@@ -4368,12 +4412,13 @@ export class PriceAjustmentOrderServiceProxy {
     }
 }
 
-export class OtherOutOrderServiceProxy {
+export class OtherOutOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -4530,12 +4575,13 @@ export class OtherOutOrderServiceProxy {
     }
 }
 
-export class OtherInOrderServiceProxy {
+export class OtherInOrderServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     antiReview(id: string): Promise<void> {
@@ -4692,12 +4738,13 @@ export class OtherInOrderServiceProxy {
     }
 }
 
-export class InventoryServiceProxy {
+export class InventoryServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getAll(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfInventoryDto> {
@@ -4735,12 +4782,13 @@ export class InventoryServiceProxy {
     }
 }
 
-export class FakerDataServiceProxy {
+export class FakerDataServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     generateData(): Promise<void> {
@@ -4760,12 +4808,13 @@ export class FakerDataServiceProxy {
     }
 }
 
-export class CustomerServiceProxy {
+export class CustomerServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: CustomerDto): Promise<CustomerDto> {
@@ -4970,12 +5019,13 @@ export class CustomerServiceProxy {
     }
 }
 
-export class CustomerPriceServiceProxy {
+export class CustomerPriceServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfCustomerPriceDto> {
@@ -5013,12 +5063,13 @@ export class CustomerPriceServiceProxy {
     }
 }
 
-export class DictionaryServiceProxy {
+export class DictionaryServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getAllList(): Promise<DictionaryItemDto[]> {
@@ -5130,12 +5181,13 @@ export class DictionaryServiceProxy {
     }
 }
 
-export class ZeroSettingServiceProxy {
+export class ZeroSettingServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getAllEmailSettings(): Promise<ZeroEmailSettingDto> {
@@ -5213,12 +5265,13 @@ export class ZeroSettingServiceProxy {
     }
 }
 
-export class AuditLogServiceProxy {
+export class AuditLogServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getList(items: ConditionItem[] | null | undefined, maxResultCount: number | undefined, skipCount: number | undefined, sorting: string | null | undefined): Promise<PagedResultDtoOfAuditLogListDto> {
@@ -5305,12 +5358,13 @@ export class AuditLogServiceProxy {
     }
 }
 
-export class AnubUserServiceProxy {
+export class AnubUserServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     changePassword(currentPassword: string | null | undefined, newPassword: string | null | undefined): Promise<void> {
@@ -5548,12 +5602,13 @@ export class AnubUserServiceProxy {
     }
 }
 
-export class ReportTemplateServiceProxy {
+export class ReportTemplateServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     create(input: CreateTemplateInput): Promise<void> {
@@ -5637,12 +5692,13 @@ export class ReportTemplateServiceProxy {
     }
 }
 
-export class RecentAccessServiceProxy {
+export class RecentAccessServiceProxy extends ClientBase {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:57992";
+        super();
+        this.baseUrl = this.getBaseUrl("http://localhost:57992", baseUrl);
     }
 
     getList(): Promise<ListResultDtoOfApplicationMenuItem> {

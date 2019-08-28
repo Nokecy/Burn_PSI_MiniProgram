@@ -1,5 +1,5 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
-import { SafetyStockServiceProxy as ServiceProxy, PagedResultDtoOfSafetyStockDto, SafetyStockDto } from "ApiService";
+import { SafetyStockServiceProxy as ServiceProxy, PagedResultDtoOfSafetyStockDto, SafetyStockDto } from "../../../../services/service-proxies";
 const namespace = "safetyStock";
 
 export interface SafetyStockProps {

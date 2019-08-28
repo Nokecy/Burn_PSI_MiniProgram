@@ -1,6 +1,7 @@
 import { create } from 'dva-core';
 import { createLogger } from 'redux-logger';
 import createLoading from 'dva-loading';
+import Taro from '@tarojs/taro';
 
 let app
 let store
@@ -22,6 +23,11 @@ function createApp(opt) {
     app.use({
         onError(err) {
             console.log(err)
+            Taro.atMessage({
+                message: '请求失败',
+                type: "error",
+                duration: 2000
+            })
         },
     })
 

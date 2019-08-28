@@ -21,12 +21,7 @@
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"
-    ],
-    "paths": {
-      "ApiService": [
-        "./src/services/service-proxies.ts"
-      ]
-    },
+    ]
   },
   "exclude": [
     "node_modules",

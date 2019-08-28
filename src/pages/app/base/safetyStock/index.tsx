@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { CategoryProps, actions } from "./category.model";
+import { SafetyStockProps, actions } from "./safetyStock.model";
 import { AtList, AtListItem, AtSearchBar, AtMessage } from 'taro-ui';
 
 type PageOwnProps = {
@@ -14,14 +14,14 @@ type PageState = {
     value: string
 }
 
-type IProps = CategoryProps & PageOwnProps
+type IProps = SafetyStockProps & PageOwnProps
 
-@connect(({ category }) => ({
-    ...category
+@connect(({ safetyStock }) => ({
+    ...safetyStock
 }))
-class Category extends Component<IProps, PageState> {
+class SafetyStock extends Component<IProps, PageState> {
     config: Config = {
-        navigationBarTitleText: '存货分类',
+        navigationBarTitleText: '安全库存',
         enablePullDownRefresh: true
     }
 
@@ -49,7 +49,6 @@ class Category extends Component<IProps, PageState> {
         return (
             <View>
                 <AtMessage />
-
                 <AtSearchBar
                     fixed={true}
                     actionName="搜一下"
@@ -60,7 +59,11 @@ class Category extends Component<IProps, PageState> {
                 <View style='margin-top:42px;'>
                     <AtList>
                         {
-                            list!.map(a => <AtListItem key={a.id} title={a.name} note={a.parentName} arrow='right' />)
+                            list!.map(a => <AtListItem key={a.id}
+                                title={a.product!.name}
+                                note={a.product!.spec}
+                                extraText={a.maxQuantity!.toString()}
+                                arrow='right' />)
                         }
                     </AtList>
                 </View>
@@ -69,4 +72,4 @@ class Category extends Component<IProps, PageState> {
     }
 }
 
-export default Category as ComponentClass<PageOwnProps, PageState>
+export default SafetyStock as ComponentClass<PageOwnProps, PageState>

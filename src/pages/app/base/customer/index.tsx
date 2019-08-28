@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { CategoryProps, actions } from "./category.model";
+import { CustomerProps, actions } from "./customer.model";
 import { AtList, AtListItem, AtSearchBar, AtMessage } from 'taro-ui';
 
 type PageOwnProps = {
@@ -14,14 +14,14 @@ type PageState = {
     value: string
 }
 
-type IProps = CategoryProps & PageOwnProps
+type IProps = CustomerProps & PageOwnProps
 
-@connect(({ category }) => ({
-    ...category
+@connect(({ customer }) => ({
+    ...customer
 }))
-class Category extends Component<IProps, PageState> {
+class Customer extends Component<IProps, PageState> {
     config: Config = {
-        navigationBarTitleText: '存货分类',
+        navigationBarTitleText: '客户管理',
         enablePullDownRefresh: true
     }
 
@@ -49,7 +49,6 @@ class Category extends Component<IProps, PageState> {
         return (
             <View>
                 <AtMessage />
-
                 <AtSearchBar
                     fixed={true}
                     actionName="搜一下"
@@ -60,7 +59,11 @@ class Category extends Component<IProps, PageState> {
                 <View style='margin-top:42px;'>
                     <AtList>
                         {
-                            list!.map(a => <AtListItem key={a.id} title={a.name} note={a.parentName} arrow='right' />)
+                            list!.map(a => <AtListItem key={a.id}
+                                title={a.name}
+                                note={a.defaultContact!.name}
+                                extraText={a.defaultContact!.telPhone}
+                                arrow='right' />)
                         }
                     </AtList>
                 </View>
@@ -69,4 +72,4 @@ class Category extends Component<IProps, PageState> {
     }
 }
 
-export default Category as ComponentClass<PageOwnProps, PageState>
+export default Customer as ComponentClass<PageOwnProps, PageState>

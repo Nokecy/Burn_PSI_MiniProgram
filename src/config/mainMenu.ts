@@ -6,7 +6,7 @@ const MainMenus: MainMenu[] = [
         menus: [
             { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "存货分类", url: "/pages/app/base/category/index" },
             { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "计量单位", url: "/pages/app/base/unit/index" },
-            { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "仓库管理", url: "/pages/app/base/warhouse/index" },
+            { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "仓库管理", url: "/pages/app/base/warehouse/index" },
             { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "存货管理", url: "/pages/app/base/product/index" },
             { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "客户管理", url: "/pages/app/base/customer/index" },
             { image: "https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png", value: "供应商管理", url: "/pages/app/base/supplier/index" },

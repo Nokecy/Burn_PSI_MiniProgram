@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import { CategoryProps, actions } from "./category.model";
+import { WarehouseProps, actions } from "./warehouse.model";
 import { AtList, AtListItem, AtSearchBar, AtMessage } from 'taro-ui';
 
 type PageOwnProps = {
@@ -14,14 +14,14 @@ type PageState = {
     value: string
 }
 
-type IProps = CategoryProps & PageOwnProps
+type IProps = WarehouseProps & PageOwnProps
 
-@connect(({ category }) => ({
-    ...category
+@connect(({ warehouse }) => ({
+    ...warehouse
 }))
-class Category extends Component<IProps, PageState> {
+class Warehouse extends Component<IProps, PageState> {
     config: Config = {
-        navigationBarTitleText: '存货分类',
+        navigationBarTitleText: '仓库管理',
         enablePullDownRefresh: true
     }
 
@@ -49,7 +49,6 @@ class Category extends Component<IProps, PageState> {
         return (
             <View>
                 <AtMessage />
-
                 <AtSearchBar
                     fixed={true}
                     actionName="搜一下"
@@ -57,10 +56,13 @@ class Category extends Component<IProps, PageState> {
                     onChange={(value) => { this.setState({ value: value }) }}
                     onActionClick={this.onActionClick.bind(this)}
                 />
+
                 <View style='margin-top:42px;'>
                     <AtList>
                         {
-                            list!.map(a => <AtListItem key={a.id} title={a.name} note={a.parentName} arrow='right' />)
+                            list!.map(a => <AtListItem key={a.id}
+                                title={a.name}
+                                arrow='right' />)
                         }
                     </AtList>
                 </View>
@@ -69,4 +71,4 @@ class Category extends Component<IProps, PageState> {
     }
 }
 
-export default Category as ComponentClass<PageOwnProps, PageState>
+export default Warehouse as ComponentClass<PageOwnProps, PageState>

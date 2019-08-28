@@ -1,5 +1,5 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
-import { ProductServiceProxy as ServiceProxy, PagedResultDtoOfProductDto, ProductDto } from "ApiService";
+import { ProductServiceProxy as ServiceProxy, PagedResultDtoOfProductDto, ProductDto } from "../../../../services/service-proxies";
 const namespace = "product";
 
 export interface ProductProps {

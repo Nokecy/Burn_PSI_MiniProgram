@@ -1,5 +1,5 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
-import request from "../../utils/request";
+import { TokenAuthServiceProxy, AuthenticateResultModel } from "../../services/service-proxies";
 import IAuthenticateResult from "../../types/authenticate";
 import Taro from '@tarojs/taro';
 const nameSpace = "login"
@@ -13,18 +13,15 @@ export interface LoginState {
 const model = new DvaModelBuilder<LoginState>({ number: 0 }, nameSpace)
 
     .takeEvery(authenticate, function* (payload, { }) {
-        const result: IAuthenticateResult = yield request({
-            url: '/api/TokenAuth/Authenticate',
-            method: "POST",
-            data: {
-                "userNameOrEmailAddress": payload.userName,
-                "password": payload.password,
-                "rememberClient": true
-            }
-        });
-        Taro.setStorageSync('token', result.accessToken!);
+        let queryModel: any = {
+            userNameOrEmailAddress: payload.userName, password: payload.password,
+            rememberClient: true
+        };
+        const token: AuthenticateResultModel = yield new TokenAuthServiceProxy().authenticate(queryModel);
 
-        Taro.navigateTo({ url: '/pages/home/index' });
+        Taro.setStorageSync('token', token.accessToken!);
+
+        Taro.switchTab({ url: '/pages/home/index' });
     })
     .build();
 

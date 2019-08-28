@@ -1,5 +1,8 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
-import { ProductCategoryServiceProxy as ServiceProxy, PagedResultDtoOfProductCategoryDto, ProductCategoryDto } from "ApiService";
+import { ProductCategoryServiceProxy as ServiceProxy, PagedResultDtoOfProductCategoryDto, ProductCategoryDto } from "../../../../services/service-proxies";
+import Taro from '@tarojs/taro';
+const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+
 const namespace = "category";
 
 export interface CategoryProps {
@@ -20,10 +23,17 @@ const model = new DvaModelBuilder<CategoryProps>({ list: [] }, namespace)
         return { ...state, ...payload };
     })
 
-    .takeEvery(query, function* (payload, { put }) {
+    .takeEvery(query, function* (payload, { put, call }) {
+        Taro.showNavigationBarLoading();
+
         let service = new ServiceProxy();
         const categorys: PagedResultDtoOfProductCategoryDto = yield service.getList(undefined, 30, 0, undefined);
         yield put(updateState({ list: categorys.items }));
+
+        yield call(delay, 2000);
+
+        Taro.hideNavigationBarLoading() //完成停止加载
+        Taro.stopPullDownRefresh() //停止下拉刷新
     })
 
     .takeEvery(get, function* (payload, { put }) {

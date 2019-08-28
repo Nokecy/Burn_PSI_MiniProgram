@@ -2,8 +2,7 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-
-import { CategoryProps, actions } from "./category.model";
+import { UnitProps, actions } from "./unit.model";
 import { AtList, AtListItem, AtSearchBar, AtMessage } from 'taro-ui';
 
 type PageOwnProps = {
@@ -14,14 +13,14 @@ type PageState = {
     value: string
 }
 
-type IProps = CategoryProps & PageOwnProps
+type IProps = UnitProps & PageOwnProps
 
-@connect(({ category }) => ({
-    ...category
+@connect(({ unit }) => ({
+    ...unit
 }))
-class Category extends Component<IProps, PageState> {
+class Unit extends Component<IProps, PageState> {
     config: Config = {
-        navigationBarTitleText: '存货分类',
+        navigationBarTitleText: '计量单位管理',
         enablePullDownRefresh: true
     }
 
@@ -57,16 +56,20 @@ class Category extends Component<IProps, PageState> {
                     onChange={(value) => { this.setState({ value: value }) }}
                     onActionClick={this.onActionClick.bind(this)}
                 />
+
                 <View style='margin-top:42px;'>
                     <AtList>
                         {
-                            list!.map(a => <AtListItem key={a.id} title={a.name} note={a.parentName} arrow='right' />)
+                            list!.map(a => <AtListItem key={a.id}
+                                title={a.name}
+                                arrow='right' />)
                         }
                     </AtList>
                 </View>
+
             </View>
         )
     }
 }
 
-export default Category as ComponentClass<PageOwnProps, PageState>
+export default Unit as ComponentClass<PageOwnProps, PageState>
