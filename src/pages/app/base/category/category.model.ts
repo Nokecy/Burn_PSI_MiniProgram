@@ -31,7 +31,7 @@ const model = new DvaModelBuilder<CategoryProps>({ list: [] }, namespace)
         yield put(updateState({ list: categorys.items }));
 
         yield call(delay, 2000);
-
+        
         Taro.hideNavigationBarLoading() //完成停止加载
         Taro.stopPullDownRefresh() //停止下拉刷新
     })
