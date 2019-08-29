@@ -4,25 +4,18 @@ import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import './index.less'
-import { Counter } from "../../models/global";
+import { Global } from "../../models/global";
 import { AtGrid } from 'taro-ui';
 import MainMenus from "../../config/mainMenu";
 
 type PageOwnProps = {
   dispatch?: Function
 }
+type PageState = {}
+type IProps = Global & PageOwnProps
 
-type PageState = {
-}
-
-type IProps = Counter & PageOwnProps
-
-interface Index {
-  props: IProps;
-}
-
-@connect(({ counter }) => ({
-  ...counter
+@connect(({ global }) => ({
+  ...global
 }))
 class Index extends Component<IProps, PageState> {
   config: Config = {

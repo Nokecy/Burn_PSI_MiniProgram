@@ -1,6 +1,6 @@
 import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { Provider } from '@tarojs/redux'
+import { Provider, connect } from '@tarojs/redux'
 import "./config/taroConfig"
 
 import dva from './utils/dva'
@@ -9,11 +9,17 @@ import 'taro-ui/dist/style/index.scss'
 
 import './assets/font/iconfont.css'
 import './app.less'
-// 如果需要在 h5 环境中开启 React Devtools
-// 取消以下注释：
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
-// }
+
+import { actions, Global } from "./models/global";
+
+type PageOwnProps = {
+  dispatch?: Function
+}
+
+type PageState = {
+}
+
+type IProps = Global & PageOwnProps
 
 const dvaApp = dva.createApp({
   namespacePrefixWarning: false,
@@ -23,15 +29,9 @@ const dvaApp = dva.createApp({
 
 const store = dvaApp.getStore();
 
-class App extends Component {
 
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
+class App extends Component<IProps, PageState> {
+
   config: Config = {
     pages: [
       'pages/loading/index',//加载页
@@ -83,10 +83,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const { dispatch } = dvaApp;
     if (Taro.getStorageSync('token')) {
-      Taro.switchTab({
-        url: 'pages/home/index'
-      })
+      dispatch!(actions.loadConfiguration());
     } else {
       Taro.reLaunch({
         url: 'pages/login/index'

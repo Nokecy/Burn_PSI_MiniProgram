@@ -23,7 +23,7 @@ const model = new DvaModelBuilder<CategoryProps>({ list: [] }, namespace)
         return { ...state, ...payload };
     })
 
-    .takeEvery(query, function* (payload, { put, call }) {
+    .takeEvery(query, function* (_payload, { put, call }) {
         Taro.showNavigationBarLoading();
 
         let service = new ServiceProxy();

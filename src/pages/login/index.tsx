@@ -4,7 +4,6 @@ import { View } from '@tarojs/components'
 import { AtForm, AtButton, AtInput, AtIcon, AtToast } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
-import './index.less'
 import { LoginState, actions } from "./login.model";
 
 type PageOwnProps = {
@@ -18,10 +17,6 @@ type PageState = {
 }
 
 type IProps = LoginState & PageOwnProps
-
-interface Index {
-    props: IProps;
-}
 
 @connect(({ login, loading }) => ({
     ...login,

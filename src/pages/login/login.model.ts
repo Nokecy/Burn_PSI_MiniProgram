@@ -1,6 +1,6 @@
 import { DvaModelBuilder, actionCreatorFactory } from 'dva-model-creator';
 import { TokenAuthServiceProxy, AuthenticateResultModel } from "../../services/service-proxies";
-import IAuthenticateResult from "../../types/authenticate";
+import { actions as globalActions } from "../../models/global";
 import Taro from '@tarojs/taro';
 const nameSpace = "login"
 
@@ -12,7 +12,7 @@ export interface LoginState {
 
 const model = new DvaModelBuilder<LoginState>({ number: 0 }, nameSpace)
 
-    .takeEvery(authenticate, function* (payload, { }) {
+    .takeEvery(authenticate, function* (payload, { put }) {
         let queryModel: any = {
             userNameOrEmailAddress: payload.userName, password: payload.password,
             rememberClient: true
@@ -21,7 +21,7 @@ const model = new DvaModelBuilder<LoginState>({ number: 0 }, nameSpace)
 
         Taro.setStorageSync('token', token.accessToken!);
 
-        Taro.switchTab({ url: '/pages/home/index' });
+        yield put(globalActions.loadConfiguration());
     })
     .build();
 

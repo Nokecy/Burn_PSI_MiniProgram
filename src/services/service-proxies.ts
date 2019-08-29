@@ -13,6 +13,12 @@ export class ClientBase {
     protected getBaseUrl(defaultUrl: string, baseUrl?: string) {
         return baseUrl ? baseUrl : defaultUrl;
     }
+
+    protected transformOptions(request: request.Param) {
+        let token = Taro.getStorageSync('token');
+        request.header["Authorization"] = "Bearer " + token;
+        return Promise.resolve(request);
+    }
 }
 
 export class AttachmentServiceProxy extends ClientBase {
@@ -50,7 +56,9 @@ export class AttachmentServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -70,7 +78,9 @@ export class AttachmentServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -99,7 +109,9 @@ export class ProfilePictureServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -130,7 +142,9 @@ export class TokenAuthServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -157,7 +171,9 @@ export class SettingPageServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -196,7 +212,9 @@ export class AbpServiceProxyScriptServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -229,7 +247,9 @@ export class AbpLanguagesServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -256,7 +276,9 @@ export class AbpApplicationConfigurationScriptServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -283,7 +305,9 @@ export class AbpLocalizationDefinitionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -310,7 +334,9 @@ export class AbpMenuDefinitionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -340,7 +366,9 @@ export class AbpTenantServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -370,7 +398,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -388,7 +418,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -408,7 +440,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -427,7 +461,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -446,7 +482,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -463,7 +501,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -480,7 +520,9 @@ export class DataPermissionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -511,7 +553,9 @@ export class AccountServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -532,7 +576,9 @@ export class AccountServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -553,7 +599,9 @@ export class AccountServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -580,7 +628,9 @@ export class AbpApplicationConfigurationServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -607,7 +657,9 @@ export class AbpApiDefinitionServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -634,7 +686,9 @@ export class IdentityRoleServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -655,7 +709,9 @@ export class IdentityRoleServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -675,7 +731,9 @@ export class IdentityRoleServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -699,7 +757,9 @@ export class IdentityRoleServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -718,7 +778,9 @@ export class IdentityRoleServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -748,7 +810,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -772,7 +836,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -791,7 +857,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -820,7 +888,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -841,7 +911,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -861,7 +933,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -884,7 +958,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -904,7 +980,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -924,7 +1002,9 @@ export class IdentityUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -954,7 +1034,9 @@ export class IdentityUserLookupServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -974,7 +1056,9 @@ export class IdentityUserLookupServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1001,7 +1085,9 @@ export class ProfileServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1022,7 +1108,9 @@ export class ProfileServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1042,7 +1130,9 @@ export class ProfileServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1073,7 +1163,9 @@ export class PermissionsServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1097,7 +1189,9 @@ export class PermissionsServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1134,7 +1228,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1155,7 +1251,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1182,7 +1280,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1203,7 +1303,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1230,7 +1332,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1251,7 +1355,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1278,7 +1384,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1299,7 +1407,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1326,7 +1436,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1347,7 +1459,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1374,7 +1488,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1395,7 +1511,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1422,7 +1540,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1443,7 +1563,9 @@ export class ReportServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1474,7 +1596,9 @@ export class WarehouseServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1508,7 +1632,9 @@ export class WarehouseServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1527,7 +1653,9 @@ export class WarehouseServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1547,7 +1675,9 @@ export class WarehouseServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1571,7 +1701,9 @@ export class WarehouseServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1602,7 +1734,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1636,7 +1770,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1655,7 +1791,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1675,7 +1813,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1699,7 +1839,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1716,7 +1858,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1735,7 +1879,9 @@ export class UnitServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1766,7 +1912,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1800,7 +1948,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1819,7 +1969,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1839,7 +1991,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1863,7 +2017,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1884,7 +2040,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1905,7 +2063,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1925,7 +2085,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1946,7 +2108,9 @@ export class SupplierServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -1990,7 +2154,9 @@ export class SupplierPriceServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2019,7 +2185,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2038,7 +2206,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2059,7 +2229,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2093,7 +2265,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2114,7 +2288,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2133,7 +2309,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2153,7 +2331,9 @@ export class StoreTransferServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2180,7 +2360,9 @@ export class PSISettingServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2200,7 +2382,9 @@ export class PSISettingServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2229,7 +2413,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2248,7 +2434,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2269,7 +2457,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2303,7 +2493,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2324,7 +2516,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2343,7 +2537,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2363,7 +2559,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2397,7 +2595,9 @@ export class SaleOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2426,7 +2626,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2445,7 +2647,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2464,7 +2668,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2483,7 +2689,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2504,7 +2712,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2538,7 +2748,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2559,7 +2771,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2578,7 +2792,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2598,7 +2814,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2619,7 +2837,9 @@ export class SaleOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2648,7 +2868,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2667,7 +2889,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2688,7 +2912,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2722,7 +2948,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2743,7 +2971,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2762,7 +2992,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2782,7 +3014,9 @@ export class SaleInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2812,7 +3046,9 @@ export class SafetyStockServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2846,7 +3082,9 @@ export class SafetyStockServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2866,7 +3104,9 @@ export class SafetyStockServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2885,7 +3125,9 @@ export class SafetyStockServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2905,7 +3147,9 @@ export class SafetyStockServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2932,7 +3176,9 @@ export class SafetyStockServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2961,7 +3207,9 @@ export class QuotationOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -2982,7 +3230,9 @@ export class QuotationOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3016,7 +3266,9 @@ export class QuotationOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3041,7 +3293,9 @@ export class QuotationOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3060,7 +3314,9 @@ export class QuotationOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3080,7 +3336,9 @@ export class QuotationOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3109,7 +3367,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3128,7 +3388,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3147,7 +3409,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3166,7 +3430,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3187,7 +3453,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3221,7 +3489,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3242,7 +3512,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3261,7 +3533,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3281,7 +3555,9 @@ export class PurchaseRequestOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3310,7 +3586,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3329,7 +3607,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3350,7 +3630,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3384,7 +3666,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3405,7 +3689,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3424,7 +3710,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3444,7 +3732,9 @@ export class PurchaseOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3473,7 +3763,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3492,7 +3784,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3511,7 +3805,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3530,7 +3826,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3551,7 +3849,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3585,7 +3885,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3606,7 +3908,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3625,7 +3929,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3645,7 +3951,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3668,7 +3976,9 @@ export class PurchaseOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3697,7 +4007,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3716,7 +4028,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3737,7 +4051,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3771,7 +4087,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3792,7 +4110,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3811,7 +4131,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3831,7 +4153,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3865,7 +4189,9 @@ export class PurchaseInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3896,7 +4222,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3930,7 +4258,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3949,7 +4279,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3969,7 +4301,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -3993,7 +4327,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4013,7 +4349,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4033,7 +4371,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4054,7 +4394,9 @@ export class ProductServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4085,7 +4427,9 @@ export class ProductCategoryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4119,7 +4463,9 @@ export class ProductCategoryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4138,7 +4484,9 @@ export class ProductCategoryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4158,7 +4506,9 @@ export class ProductCategoryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4182,7 +4532,9 @@ export class ProductCategoryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4225,7 +4577,9 @@ export class PriceServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4258,7 +4612,9 @@ export class PriceServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4287,7 +4643,9 @@ export class PriceAjustmentOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4308,7 +4666,9 @@ export class PriceAjustmentOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4342,7 +4702,9 @@ export class PriceAjustmentOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4367,7 +4729,9 @@ export class PriceAjustmentOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4386,7 +4750,9 @@ export class PriceAjustmentOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4406,7 +4772,9 @@ export class PriceAjustmentOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4435,7 +4803,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4454,7 +4824,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4475,7 +4847,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4509,7 +4883,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4530,7 +4906,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4549,7 +4927,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4569,7 +4949,9 @@ export class OtherOutOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4598,7 +4980,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4617,7 +5001,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4638,7 +5024,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4672,7 +5060,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4693,7 +5083,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4712,7 +5104,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4732,7 +5126,9 @@ export class OtherInOrderServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4776,7 +5172,9 @@ export class InventoryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4802,7 +5200,9 @@ export class FakerDataServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4833,7 +5233,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4867,7 +5269,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4886,7 +5290,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4906,7 +5312,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4930,7 +5338,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4951,7 +5361,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4972,7 +5384,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -4992,7 +5406,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5013,7 +5429,9 @@ export class CustomerServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5057,7 +5475,9 @@ export class CustomerPriceServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5084,7 +5504,9 @@ export class DictionaryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5103,7 +5525,9 @@ export class DictionaryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5124,7 +5548,9 @@ export class DictionaryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5147,7 +5573,9 @@ export class DictionaryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5175,7 +5603,9 @@ export class DictionaryServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5202,7 +5632,9 @@ export class ZeroSettingServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5219,7 +5651,9 @@ export class ZeroSettingServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5239,7 +5673,9 @@ export class ZeroSettingServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5259,7 +5695,9 @@ export class ZeroSettingServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5303,7 +5741,9 @@ export class AuditLogServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5332,7 +5772,9 @@ export class AuditLogServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5352,7 +5794,9 @@ export class AuditLogServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5382,7 +5826,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5403,7 +5849,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5432,7 +5880,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5451,7 +5901,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5471,7 +5923,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5495,7 +5949,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5514,7 +5970,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5533,7 +5991,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5553,7 +6013,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5576,7 +6038,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5596,7 +6060,9 @@ export class AnubUserServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5626,7 +6092,9 @@ export class ReportTemplateServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5645,7 +6113,9 @@ export class ReportTemplateServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5666,7 +6136,9 @@ export class ReportTemplateServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5686,7 +6158,9 @@ export class ReportTemplateServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
@@ -5713,7 +6187,9 @@ export class RecentAccessServiceProxy extends ClientBase {
             }
         };
 
-        return Taro.request({...options_}).then((_response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return Taro.request({...transformedOptions_});
+        }).then((_response: request.Promised) => {
             return _response.data;
         });
     }
