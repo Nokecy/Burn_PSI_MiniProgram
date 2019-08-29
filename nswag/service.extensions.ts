@@ -1,9 +1,9 @@
 ﻿import moment from 'moment';
 import Taro, { request } from '@tarojs/taro';
-
+import { HOST } from "../config/index";
 class ClientBase {
     protected getBaseUrl(defaultUrl: string, baseUrl?: string) {
-        return baseUrl ? baseUrl : defaultUrl;
+        return HOST;//baseUrl ? baseUrl : defaultUrl;
     }
 
     protected transformOptions(request: request.Param) {
