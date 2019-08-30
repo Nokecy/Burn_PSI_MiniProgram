@@ -21,7 +21,7 @@ type IProps = SupplierProps & PageOwnProps
 }))
 class Supplier extends Component<IProps, PageState> {
     config: Config = {
-        navigationBarTitleText: '客户管理',
+        navigationBarTitleText: '供应商管理',
         enablePullDownRefresh: true
     }
 

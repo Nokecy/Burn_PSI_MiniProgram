@@ -31,7 +31,7 @@ const model = new DvaModelBuilder<CategoryProps>({ list: [] }, namespace)
         yield put(updateState({ list: categorys.items }));
 
         yield call(delay, 2000);
-        
+
         Taro.hideNavigationBarLoading() //完成停止加载
         Taro.stopPullDownRefresh() //停止下拉刷新
     })
@@ -46,11 +46,13 @@ const model = new DvaModelBuilder<CategoryProps>({ list: [] }, namespace)
         let service = new ServiceProxy();
         yield service.create(payload);
         yield put(query());
+        Taro.navigateBack();
     })
 
     .takeEvery(update, function* (payload, { put }) {
         let service = new ServiceProxy();
         yield service.update(payload.id, payload);
+        Taro.navigateBack();
         yield put(query());
     })
 

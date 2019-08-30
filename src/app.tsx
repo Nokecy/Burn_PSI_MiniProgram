@@ -41,6 +41,9 @@ class App extends Component<IProps, PageState> {
       'pages/profile/index',//用户页
 
       'pages/app/base/category/index',//存货分类
+      'pages/app/base/category/create',//存货分类
+      // 'pages/app/base/category/index',//存货分类
+      
       'pages/app/base/customer/index',//客户管理
       'pages/app/base/product/index',//存货管理
       'pages/app/base/safetyStock/index',//安全库存

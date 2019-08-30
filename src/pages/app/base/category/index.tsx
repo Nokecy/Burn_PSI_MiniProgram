@@ -1,10 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { CategoryProps, actions } from "./category.model";
-import { AtList, AtListItem, AtSearchBar, AtMessage } from 'taro-ui';
+import { AtList, AtListItem, AtSearchBar, AtMessage, AtFab } from 'taro-ui';
 
 type PageOwnProps = {
     dispatch?: Function
@@ -44,6 +44,10 @@ class Category extends Component<IProps, PageState> {
         console.log("开始搜索")
     }
 
+    onButtonClick = () => {
+        Taro.navigateTo({ url: "/pages/app/base/category/create" })
+    }
+
     render() {
         const { list } = this.props;
         return (
@@ -63,6 +67,12 @@ class Category extends Component<IProps, PageState> {
                             list!.map(a => <AtListItem key={a.id} title={a.name} note={a.parentName} arrow='right' />)
                         }
                     </AtList>
+                </View>
+
+                <View style={{ position: "fixed", bottom: "16px", right: "16px" }}>
+                    <AtFab onClick={this.onButtonClick}>
+                        <Text className='at-fab__icon at-icon at-icon-add'></Text>
+                    </AtFab>
                 </View>
             </View>
         )
