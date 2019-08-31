@@ -5,6 +5,7 @@ const namespace = "unit";
 export interface UnitProps {
     list?: UnitDto[],
     entity?: UnitDto
+    openModal?: boolean
 }
 
 const actionCreator = actionCreatorFactory(namespace);
@@ -20,7 +21,7 @@ const model = new DvaModelBuilder<UnitProps>({ list: [] }, namespace)
         return { ...state, ...payload };
     })
 
-    .takeEvery(query, function* (payload, { put }) {
+    .takeEvery(query, function* (_payload, { put }) {
         let service = new ServiceProxy();
         const categorys: PagedResultDtoOfUnitDto = yield service.getList(undefined, 30, 0, undefined);
         yield put(updateState({ list: categorys.items }));
