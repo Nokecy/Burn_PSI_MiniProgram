@@ -5,6 +5,7 @@ const namespace = "warehouse";
 export interface WarehouseProps {
     list?: WarehouseDto[],
     entity?: WarehouseDto
+    openModal?: boolean
 }
 
 const actionCreator = actionCreatorFactory(namespace);
@@ -15,12 +16,12 @@ const create = actionCreator<WarehouseDto>('create');
 const update = actionCreator<WarehouseDto>('update');
 const deleteAction = actionCreator<{ id: string }>('delete');
 
-const model = new DvaModelBuilder<WarehouseProps>({ list: [] }, namespace)
+const model = new DvaModelBuilder<WarehouseProps>({ list: [], openModal: false }, namespace)
     .case(updateState, (state, payload) => {
         return { ...state, ...payload };
     })
 
-    .takeEvery(query, function* (payload, { put }) {
+    .takeEvery(query, function* (_payload, { put }) {
         let service = new ServiceProxy();
         const categorys: PagedResultDtoOfWarehouseDto = yield service.getList(undefined, 30, 0, undefined);
         yield put(updateState({ list: categorys.items }));
